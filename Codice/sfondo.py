@@ -1,6 +1,4 @@
 import pygame
-from pygame import *
-
 class Sfondo:
     def __init__(self, screen, pos, image, velocity = 5) -> None:
         self.screen = screen
