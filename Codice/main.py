@@ -8,6 +8,10 @@ from proiettili import *
 
 pygame.init()
 
+import winsound 
+
+
+
 larghezza = 850
 altezza = 531
 WINDOW_SIZE =(larghezza, altezza)
@@ -40,8 +44,6 @@ def main_menu():
                 sys.exit()
 
             if start_button.handle_event(event):
-
-
                 play()
         
         if start_button.mouse_sopra():
@@ -53,6 +55,15 @@ def main_menu():
         pygame.display.flip()
 
 def play():
+
+    # setto frquenza a 850
+    freq = 850
+
+    # durata di 100 millisecondi			 
+    dur = 100
+                
+    winsound.Beep(freq, dur)
+
     bird_image = pygame.image.load('Immagini/bird1.png')
 
     bird = Bird(image=bird_image, x=100, y=300, size = (100, 100) ,velocity=0, gravity=0.5, jump_strength=10)
@@ -74,6 +85,9 @@ def play():
 
     running = True
 
+    sound = pygame.mixer.Sound('Codice/file.mp3')
+    sound.play()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -82,6 +96,13 @@ def play():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                         bird.jump()
+                        # setto frquenza a 500 Hz
+                        freq = 420
+
+                        # durata di 100 millisecondi			 
+                        dur = 50
+                                    
+                        winsound.Beep(freq, dur)
 
         posizione_sfondo -= 1
         if posizione_sfondo <= -larghezza:
@@ -102,3 +123,4 @@ def play():
 
 if __name__ == "__main__":
     main_menu()
+
