@@ -1,8 +1,10 @@
-import pygame
+import pygame, sys
 from pygame.locals import *
+import subprocess
 from sfondo import *
 from bird import *
-from tubi import *
+from botton import *
+from proiettili import *
 
 pygame.init()
 
@@ -12,46 +14,91 @@ WINDOW_SIZE =(larghezza, altezza)
 screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 pygame.display.set_caption('Finestra Base')
 
-bird_image = pygame.image.load('Immagini/bird1.png')
+larghezzaB = 850
+altezzaB = 531
+colore_sfondo = (30, 30, 30)
+colore_bottone = (70, 130, 180)
+colore_bottone2 = (100, 149, 237)
+colore_testo = (255, 255, 255)
+larghezza_bottone = 200
+altezza_bottone = 80
 
-bird = Bird(image=bird_image, x=100, y=300, size = (100, 100) ,velocity=0, gravity=0.5, jump_strength=10)
-#bird = Bird(image=bird_image, x=100, y=300, velocity=0, gravity=0.5, jump_strength=10)
+screen = pygame.display.set_mode((larghezza, altezza))
+pygame.display.set_caption("Start Menu")
 
-clock = pygame.time.Clock()
-fps = 60
+font = pygame.font.Font(None, 74)
 
-# Immagini
-sfondo_img = pygame.image.load('Immagini/spazio_Img.jpg').convert()
-sfondo_img = pygame.transform.scale(sfondo_img, (larghezza, altezza))
-sfondoRect = Sfondo(screen, pos=(0, 0), image=sfondo_img, velocity=5)
+def main_menu():
+    start_button = Button(larghezzaB // 2 - larghezza_bottone // 2, altezzaB // 2 - altezza_bottone // 2, larghezza_bottone, altezza_bottone, "START")
+    
+    while True:
+        screen.fill(colore_sfondo)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-sfondo_duplicato = pygame.Surface((larghezza * 2, altezza))
-sfondo_duplicato.blit(sfondo_img, (0, 0))
-sfondo_duplicato.blit(sfondo_img, (larghezza, 0))
+            if start_button.handle_event(event):
 
-posizione_sfondo = 0
 
-running = True
+                play()
+        
+        if start_button.mouse_sopra():
+            start_button.current_color = start_button.hover_color
+        else:
+            start_button.current_color = start_button.color
+        start_button.draw(screen)
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                bird.jump()
+        pygame.display.flip()
 
-    posizione_sfondo -= 1
-    if posizione_sfondo <= -larghezza:
-        posizione_sfondo = 0
+def play():
+    bird_image = pygame.image.load('Immagini/bird1.png')
 
-    sfondoRect.move()  # Aggiorna la posizione dello sfondo
-    screen.blit(sfondo_duplicato, (posizione_sfondo, 0))
+    bird = Bird(image=bird_image, x=100, y=300, size = (100, 100) ,velocity=0, gravity=0.5, jump_strength=10)
 
-    bird.update()  # Aggiorna la posizione dell'uccello
-    bird.draw(screen)  # Disegna l'uccello sullo schermo
+    clock = pygame.time.Clock()
+    fps = 60
 
-    pygame.display.update()
-    clock.tick(fps)
+                # Immagini
+    sfondo_img = pygame.image.load('Immagini/spazio_Img.jpg').convert()
+    sfondo_img = pygame.transform.scale(sfondo_img, (larghezza, altezza))
+    sfondoRect = Sfondo(screen, pos=(0, 0), image=sfondo_img, velocity=5)
 
-pygame.quit()
+    sfondo_duplicato = pygame.Surface((larghezza * 2, altezza))
+    sfondo_duplicato.blit(sfondo_img, (0, 0))
+    sfondo_duplicato.blit(sfondo_img, (larghezza, 0))
+
+    posizione_sfondo = 0
+    keys=pygame.key.get_pressed()
+
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            else:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+                        bird.jump()
+
+        posizione_sfondo -= 1
+        if posizione_sfondo <= -larghezza:
+            posizione_sfondo = 0
+
+        sfondoRect.move()  
+        screen.blit(sfondo_duplicato, (posizione_sfondo, 0))
+
+        bird.update()  
+        bird.draw(screen) 
+
+        pygame.display.flip()
+        pygame.display.update()
+                    
+        clock.tick(fps)
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main_menu()

@@ -11,7 +11,7 @@ class Sfondo:
         self.rect.append(self.image.get_rect())
 
     def draw(self):
-        self.screen.blit(self.image, self.rect[0],self.rect[1])
+        self.screen.blit(self.image, (self.rect[0],self.rect[1]))
     
     def move(self):
         if self.rect[1].x == 0:
