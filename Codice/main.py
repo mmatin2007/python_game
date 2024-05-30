@@ -72,7 +72,7 @@ def play():
     fps = 60
 
                 # Immagini
-    sfondo_img = pygame.image.load('Immagini/spazio_Img.jpg').convert()
+    sfondo_img = pygame.image.load('Immagini/novo_sfondo (1).jpeg').convert()
     sfondo_img = pygame.transform.scale(sfondo_img, (larghezza, altezza))
     sfondoRect = Sfondo(screen, pos=(0, 0), image=sfondo_img, velocity=5)
 
