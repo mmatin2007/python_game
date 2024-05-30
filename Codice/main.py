@@ -3,7 +3,7 @@ from pygame.locals import *
 from sfondo import *
 from bird import *
 from botton import *
-from proiettili import *
+from meteoriti import *
 
 pygame.init()
 
@@ -53,6 +53,7 @@ def main_menu():
 
         pygame.display.flip()
 
+
 def play():
 
     # setto frquenza a 850
@@ -64,6 +65,10 @@ def play():
     winsound.Beep(freq, dur)
 
     bird_image = pygame.image.load('Immagini/bird1.png')
+
+    meteoriti_image = []
+    meteoriti_image.append(pygame.image.load("Immagini/meteoriti.png"))
+    meteoriti = Meteoriti(screen, meteoriti_image, tot = 5)
 
     bird = Bird(image=bird_image, x=100, y=300, size = (100, 100) ,velocity=0, gravity=0.5, jump_strength=10)
 
@@ -86,6 +91,8 @@ def play():
 
     sound = pygame.mixer.Sound('Codice/file.mp3')
     sound.play()
+    
+    pRsPawn=0
 
     while running:
         for event in pygame.event.get():
@@ -107,11 +114,23 @@ def play():
         if posizione_sfondo <= -larghezza:
             posizione_sfondo = 0
 
+        for i in range(len(meteoriti.lista)):
+            if meteoriti.lista[i].collide_recta.colliderect(bird.rect):
+                pygame.quit()
+
         sfondoRect.move()  
         screen.blit(sfondo_duplicato, (posizione_sfondo, 0))
 
         bird.update()  
         bird.draw(screen) 
+
+        meteoriti.move()
+        meteoriti.draw(0)
+        if pRsPawn >= randint(1000, 10000):
+            meteoriti.newRock() 
+            pRsPawn = 0
+        pRsPawn += fps
+
 
         pygame.display.flip()
         pygame.display.update()
