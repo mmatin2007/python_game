@@ -1,6 +1,5 @@
 import pygame, sys
 from pygame.locals import *
-import subprocess
 from sfondo import *
 from bird import *
 from botton import *
