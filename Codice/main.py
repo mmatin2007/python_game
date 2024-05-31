@@ -94,6 +94,7 @@ def play():
     
     pRsPawn=0
 
+    cond_gameover = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -109,29 +110,35 @@ def play():
                         dur = 50
                                     
                         winsound.Beep(freq, dur)
+        if cond_gameover == False:
+            posizione_sfondo -= 1
+            if posizione_sfondo <= -larghezza:
+                posizione_sfondo = 0
 
-        posizione_sfondo -= 1
-        if posizione_sfondo <= -larghezza:
-            posizione_sfondo = 0
+            for i in range(len(meteoriti.lista)):
+                if meteoriti.lista[i].collide_recta.colliderect(bird.rect):
+                    cond_gameover = True
+                    
+                    # pygame.quit()
 
-        for i in range(len(meteoriti.lista)):
-            if meteoriti.lista[i].collide_recta.colliderect(bird.rect):
-                pygame.quit()
+            sfondoRect.move()  
+            screen.blit(sfondo_duplicato, (posizione_sfondo, 0))
 
-        sfondoRect.move()  
-        screen.blit(sfondo_duplicato, (posizione_sfondo, 0))
+            bird.update()  
+            bird.draw(screen) 
 
-        bird.update()  
-        bird.draw(screen) 
+            meteoriti.move()
+            meteoriti.draw(0)
+            if pRsPawn >= randint(1000, 10000):
+                meteoriti.newRock() 
+                pRsPawn = 0
+            pRsPawn += fps
 
-        meteoriti.move()
-        meteoriti.draw(0)
-        if pRsPawn >= randint(1000, 10000):
-            meteoriti.newRock() 
-            pRsPawn = 0
-        pRsPawn += fps
-
-
+        else:
+            screen.fill((0, 0, 0))
+            font = pygame.font.Font(None, 80)
+            text = font.render("GAME OVER", 1, (255, 255, 255))
+            screen.blit(text, (250, 250))
         pygame.display.flip()
         pygame.display.update()
                     

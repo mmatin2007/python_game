@@ -19,7 +19,7 @@ class Meteoriti:
 
         self.lista = []
         self.j = 0
-        self.velocity = 15
+        self.velocity = 7
         
 
     def draw(self, j):
