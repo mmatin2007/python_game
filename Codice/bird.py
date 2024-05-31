@@ -17,8 +17,8 @@ class Bird:
         self.y += self.velocity
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
-        if self.y >= 531:  
-            self.y = 531
+        if self.y >= 480:  
+            self.y = 480
         if self.y <= 0:  
             self.y = 0
 
